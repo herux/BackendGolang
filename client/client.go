@@ -41,8 +41,7 @@ func (c *Client) Token(token string) *Client {
 func (c *Client) GetJSON(path string, response interface{}, query map[string]string) (int, error) {
 	c.headers["Content-Type"] = "application/json"
 	c.method = "GET"
-	c.url = c.url + path + c.convertMapToQuery(query)
-
+	c.url = c.url + path + "?" + c.convertMapToQuery(query)
 	return c.sendRequest(response)
 }
 

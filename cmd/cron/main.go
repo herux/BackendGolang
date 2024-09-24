@@ -2,28 +2,42 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
+	"github.com/go-co-op/gocron/v2"
 	"github.com/herux/indegooweather/config"
 	"github.com/herux/indegooweather/constant"
+	"github.com/herux/indegooweather/cron"
 	"github.com/herux/indegooweather/db"
-	"github.com/herux/indegooweather/route"
-	"github.com/herux/indegooweather/server"
+	"github.com/herux/indegooweather/jobs"
 	flag "github.com/spf13/pflag"
 )
 
 func main() {
 	path := getConfigPath()
 	_ = config.Load(path)
+
 	db.Init()
 
-	srv := server.SetupService(config.Service(), route.RegisterAPI)
-	srv.Run()
+	cron := cron.NewCron()
+	scheduler, err := gocron.NewScheduler()
+	if err != nil {
+		log.Fatalf("error creating scheduler: %v", err)
+	}
+
+	jobs.FetchWeatherJob(scheduler, config.OpenWeatherAPIKey())
+	jobs.FetchBikestationJob(scheduler)
+
+	cron.NewScheduler(scheduler)
+	cron.Start()
+
+	select {}
 }
 
 func getConfigPath() string {
-	f := flag.NewFlagSet("indego-weather", flag.ExitOnError)
+	f := flag.NewFlagSet("indegooweather-cron", flag.ExitOnError)
 	f.Usage = func() {
 		fmt.Println(getFlagUsage(f))
 		os.Exit(0)
@@ -35,7 +49,7 @@ func getConfigPath() string {
 }
 
 func getFlagUsage(f *flag.FlagSet) string {
-	usage := "indego-weather\n\n"
+	usage := "indegooweather-cron\n\n"
 	usage += "Options:\n"
 
 	options := strings.ReplaceAll(f.FlagUsages(), "    ", "  ")

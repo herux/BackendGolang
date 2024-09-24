@@ -8,4 +8,6 @@ import (
 func RegisterAPI(route fiber.Router) {
 	apiv1 := route.Group("/api/v1")
 	apiv1.Post("/indego-data-fetch-and-store-it-db", controller.HandleFetchIndego)
+	apiv1.Get("/stations", controller.HandleStationSnapshot)
+	apiv1.Get("/stations/:kioskId", controller.HandleKiosk)
 }

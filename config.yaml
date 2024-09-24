@@ -6,7 +6,7 @@ database:
     password: postgres
     dbname: indweathdb
 
-oweather_apikey: apikey_here
+oweather_apikey: e4d25c020947523c7c18b8e4af1ce00e
 service:
     port: 8080
     readTimeout: 
