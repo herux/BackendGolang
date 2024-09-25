@@ -19,7 +19,7 @@ func main() {
 	path := getConfigPath()
 	_ = config.Load(path)
 
-	db.Init()
+	db.Init(false)
 
 	cron := cron.NewCron()
 	scheduler, err := gocron.NewScheduler()

@@ -9,6 +9,13 @@ import (
 	"github.com/herux/indegooweather/service"
 )
 
+// fetchAndStoreIndegoData
+//
+//	@Summary		Fetch and store Indego station data
+//	@Description	Fetches data from the Indego GeoJSON station status API and stores it in PostgreSQL.
+//	@Tags			Indego - Weather
+//	@Produce		json
+//	@Router			/api/v1/indego-data-fetch-and-store-it-db [post]
 func HandleFetchIndego(c *fiber.Ctx) error {
 	err := service.FetchAndStoreIndegoData()
 	if err != nil {
@@ -23,6 +30,14 @@ func HandleFetchIndego(c *fiber.Ctx) error {
 	})
 }
 
+// getStationSnapshot
+//
+//	@Summary		Get station snapshot at a specific time
+//	@Description	Retrieve the snapshot of all stations at a specified time, along with the weather data.
+//	@Tags			Indego - Weather
+//	@Param			at	query	string		true	"UTC timestamp (ISO 8601) for which to retrieve the station and weather snapshot."
+//	@Produce		json
+//	@Router			/api/v1/stations [get]
 func HandleStationSnapshot(c *fiber.Ctx) error {
 	at := c.Query("at")
 	t, err := time.Parse(time.RFC3339, at)
@@ -49,6 +64,15 @@ func HandleStationSnapshot(c *fiber.Ctx) error {
 	})
 }
 
+// getStationByKioskId
+//
+//	@Summary		Get station snapshot for a specific kiosk
+//	@Description	Retrieve the snapshot of a specific station at a specified time, along with the weather data.
+//	@Tags			Indego - Weather
+//	@Param			kioskId	path	string		true	"The kiosk ID of the station to retrieve."
+//	@Param			at	query	string		true	"UTC timestamp (ISO 8601) for which to retrieve the station and weather snapshot."
+//	@Produce		json
+//	@Router			/api/v1/stations/{kioskId} [get]
 func HandleKiosk(c *fiber.Ctx) error {
 	kioskId := c.Params("kioskId")
 	at := c.Query("at")

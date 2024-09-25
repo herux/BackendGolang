@@ -1,0 +1,53 @@
+info:
+  contact: {}
+paths:
+  /api/v1/indego-data-fetch-and-store-it-db:
+    post:
+      description: Fetches data from the Indego GeoJSON station status API and stores
+        it in PostgreSQL.
+      produces:
+      - application/json
+      responses: {}
+      summary: Fetch and store Indego station data
+      tags:
+      - Indego - Weather
+  /api/v1/stations:
+    get:
+      description: Retrieve the snapshot of all stations at a specified time, along
+        with the weather data.
+      parameters:
+      - description: UTC timestamp (ISO 8601) for which to retrieve the station and
+          weather snapshot.
+        in: query
+        name: at
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get station snapshot at a specific time
+      tags:
+      - Indego - Weather
+  /api/v1/stations/{kioskId}:
+    get:
+      description: Retrieve the snapshot of a specific station at a specified time,
+        along with the weather data.
+      parameters:
+      - description: The kiosk ID of the station to retrieve.
+        in: path
+        name: kioskId
+        required: true
+        type: string
+      - description: UTC timestamp (ISO 8601) for which to retrieve the station and
+          weather snapshot.
+        in: query
+        name: at
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get station snapshot for a specific kiosk
+      tags:
+      - Indego - Weather
+swagger: "2.0"

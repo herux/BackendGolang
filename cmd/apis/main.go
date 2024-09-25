@@ -16,7 +16,7 @@ import (
 func main() {
 	path := getConfigPath()
 	_ = config.Load(path)
-	db.Init()
+	db.Init(false)
 
 	srv := server.SetupService(config.Service(), route.RegisterAPI)
 	srv.Run()
