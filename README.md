@@ -88,3 +88,26 @@ Create a public repo on Github and push your code on it. then share the link bac
 * oAuth2 integration to protect your APIs by registering Auth0 free account.
 * A simple front end React application offering a visualization of all or part of the data utilizing the API you have built as a back end.
 * Anything else you think is cool, relevant, and consistent with the other requirements.
+
+## Installation
+
+This backend code binary mainly divide into 2 parts, which are located in the folder cmd/apis/main.go and cmd/cron/main.go
+apis is used to serve API and cron is used to sync data automatically. and this can be installed in each docker or pod for kubernetes cluster
+
+* Please create an empty database using 'indweathdb' as the name. tables and others will be created automatically by the application
+* Run APIs using command 
+```bash
+  go run cmd/apis/main.go --config config.yaml
+```
+* Run Cron using command 
+```bash
+  go run cmd/cron/main.go --config config.yaml 
+```
+* there is a file named config.yaml as the application config, you can change the connection to postgresql, service port for APIs and include the API key for OpenWeather there.
+* point your web browser to http://localhost:8080/swagger to access APIs documentation based on openAPI specification
+* I made some unit test endpoints. not complete, but i think enough to prove that i can do it. service/service_test.go and controller/controller_test.go . you can run it by:
+```bash
+  go test /service
+  go test /controller
+```
+
